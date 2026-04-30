@@ -18,11 +18,26 @@ def create_real_robot() -> Robot:
         port="/dev/ttyACM0",  # CHANGE THIS: your robot's serial port
         use_degrees=True,
         cameras={"base_camera": OpenCVCameraConfig(
-            index_or_path="/dev/video0",  # CHANGE THIS: your webcam device path
+            index_or_path="/dev/video6",  # CHANGE THIS: your webcam device path
             fps=30,
             width=640,
-            height=480
+            height=480,
+            fourcc="MJPG", # temp
         )},
+
+        #env-cam
+        # Camera #2:
+        #   Name: OpenCV Camera @ /dev/video4
+        #   Type: OpenCV
+        #   Id: /dev/video4
+        #   Backend api: FFMPEG
+        #   Default stream profile:
+        #     Format: 0.0
+        #     Fourcc: 
+        #     Width: 1920
+        #     Height: 1080
+        #     Fps: 5.0
+
         # cameras={"base_camera": RealSenseCameraConfig(
         #     serial_number_or_name="053645021390",  
         #     fps=30,

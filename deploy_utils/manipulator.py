@@ -98,7 +98,8 @@ class LeRobotRealAgent(BaseRealAgent):
             sensor_names = list(cameras.keys())
         for name in sensor_names:
             camera = cameras[name]
-            data = camera.async_read()
+            # data = camera.async_read()
+            data = camera.read()
             sensor_obs[name] = dict(rgb=(common.to_tensor(data)).unsqueeze(0))
         self._captured_sensor_data = sensor_obs
 

@@ -6,5 +6,6 @@ import envs.robot.so101
 # custom envs
 import envs.reach
 import envs.lift
+import envs.lift_position
 import envs.place
 import envs.stack

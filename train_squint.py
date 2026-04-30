@@ -562,7 +562,8 @@ if __name__ == "__main__":
         args.exp_name = os.path.basename(__file__)[: -len(".py")]
         run_name = f"{args.env_id}__{args.exp_name}__{args.seed}__{int(time.time())}"
     else:
-        run_name = args.exp_name
+        date_str = datetime.now().strftime("%Y%m%d")
+        run_name = f"{args.exp_name}__{date_str}"
     model_path = os.path.abspath(f"runs/{run_name}/ckpt.pt")
     os.makedirs(os.path.dirname(model_path), exist_ok=True)
 
