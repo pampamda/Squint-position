@@ -50,6 +50,31 @@ class SimGTPositionProvider:
         return obj_est, tcp_to_obj, valid
 
 
+@dataclass
+class FixedPositionProvider:
+    """手动指定固定物体位置，用于首次真实机器人部署验证。
+
+    坐标系：世界坐标系（= 机器人基座坐标系，原点在 base link 中心）。
+    训练时物体典型范围：X∈[0.2,0.4], Y∈[-0.1,0.1], Z≈0.012~0.014 m。
+    tcp_to_object 每步从仿真同步的 tcp_pos 动态计算，无需手动更新。
+    """
+
+    object_pos_x: float = 0.30
+    object_pos_y: float = 0.00
+    object_pos_z: float = 0.013
+
+    def get_position(self, sim_env, real_obs: dict) -> tuple[torch.Tensor, torch.Tensor, torch.Tensor]:
+        device = real_obs["state"].device
+        obj = torch.tensor(
+            [[self.object_pos_x, self.object_pos_y, self.object_pos_z]],
+            device=device, dtype=torch.float32,
+        )
+        tcp = sim_env.unwrapped.agent.tcp_pos.to(device).clone()
+        tcp_to_obj = obj - tcp
+        valid = torch.ones((1, 1), device=device)
+        return obj, tcp_to_obj, valid
+
+
 class RealDetectorPositionProvider:
     """Placeholder for second phase: RGB-D detector based provider."""
 

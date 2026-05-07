@@ -21,6 +21,7 @@ from mani_skill.utils.wrappers.flatten import FlattenRGBDObservationWrapper
 from deploy import create_wrist_camera_preprocessor, setup_safe_exit, silent_reset
 from deploy_utils.manipulator import LeRobotRealAgent
 from deploy_utils.position_provider import (
+    FixedPositionProvider,
     RealDetectorPositionProvider,
     SimGTPositionProvider,
 )
@@ -49,6 +50,12 @@ class Args:
     pos_noise_z: float = 0.003
     pos_noise_clip: float = 0.02
     pos_dropout_prob: float = 0.0
+
+    # fixed provider: 手动指定物体坐标（世界坐标系，原点=机器人基座）
+    # 训练时典型范围：X∈[0.2,0.4], Y∈[-0.1,0.1], Z≈0.013
+    fixed_pos_x: float = 0.30
+    fixed_pos_y: float = 0.00
+    fixed_pos_z: float = 0.013
 
     # checkpoint loading from wandb
     wandb_entity: Optional[str] = None
@@ -88,6 +95,12 @@ def build_provider(args: Args):
             noise_std_xyz=(args.pos_noise_x, args.pos_noise_y, args.pos_noise_z),
             noise_clip=args.pos_noise_clip,
             dropout_prob=args.pos_dropout_prob,
+        )
+    if args.provider == "fixed":
+        return FixedPositionProvider(
+            object_pos_x=args.fixed_pos_x,
+            object_pos_y=args.fixed_pos_y,
+            object_pos_z=args.fixed_pos_z,
         )
     if args.provider == "real_detector":
         return RealDetectorPositionProvider()
