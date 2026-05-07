@@ -81,7 +81,6 @@ class LiftPosition(Lift):
 
             obs.update(
                 qvel=self.agent.robot.get_qvel(),
-                is_item_grasped=info["is_item_grasped"],
                 tcp_pos=self.agent.tcp_pose.raw_pose,
                 dist_to_rest_qpos=self.agent.controller._target_qpos[:, :-1]
                 - self.rest_qpos[:-1],

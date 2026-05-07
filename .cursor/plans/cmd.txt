@@ -25,9 +25,9 @@ python deploy.py \
 
 
 python deploy_pos.py \
-  --checkpoint runs/ckpt.pt \   # checkpoint 路径
-  --episodes 5 \                # 跑几个 episode（默认5）
-  --max-episode-steps 120 \     # 每个 episode 最多多少步（默认120）
-  --action-scale 0.15 \         # 动作缩放系数，越小越慢越安全（默认0.15）
-  --control-freq 30 \           # 目标控制频率 Hz（默认30）
-  --seed 1                      # 随机种子（默认1）
+  --checkpoint <ckpt 路径> \
+  --provider fixed \
+  --fixed-pos-x 0.30 \
+  --fixed-pos-y 0.05 \
+  --fixed-pos-z 0.013 \
+  --episodes 3

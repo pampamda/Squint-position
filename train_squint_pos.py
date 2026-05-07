@@ -22,6 +22,7 @@ def main():
         "SQUINT_POS",
         "--exp_name",
         "lift_pos",
+        "--no-env-domain-randomization",
     ]
     cmd = [sys.executable, "train_squint.py", *default_args, *sys.argv[1:]]
     raise SystemExit(subprocess.call(cmd))
