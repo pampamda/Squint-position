@@ -64,6 +64,28 @@ class Args:
     wandb_version: str = "latest"
 
 
+def inject_place_features(
+    state: torch.Tensor,
+    target_pos: torch.Tensor,
+    tcp_to_target: torch.Tensor,
+) -> torch.Tensor:
+    """Replace final 6 dims with [target_pos(3), tcp_to_target(3)].
+
+    Deploy convention: PlacePosMultiShape._get_obs_extra() places target_pos
+    and tcp_to_target as the LAST 6 dims of the state vector.
+    is_item_grasped (the dim immediately before these 6) is NOT injected —
+    it comes from sim physics which tracks the real gripper state via FK.
+    """
+    fused = torch.cat([target_pos, tcp_to_target], dim=-1)
+    if fused.shape[-1] != 6:
+        raise ValueError(f"Place feature dim {fused.shape[-1]} != 6")
+    if state.shape[-1] < 6:
+        raise ValueError(f"State dim {state.shape[-1]} too small for place feature injection")
+    out = state.clone()
+    out[..., -6:] = fused
+    return out
+
+
 def inject_position_features(
     state: torch.Tensor,
     object_pos_est: torch.Tensor,

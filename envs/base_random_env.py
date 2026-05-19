@@ -367,6 +367,9 @@ class BaseRandomEnv(BaseEnv):
         self.scene.update_render(update_sensors=True, update_human_render_cameras=True)
         render_images = self.scene.get_human_render_camera_images()
         sensor_images = self.get_sensor_images()
+        # Restore hidden state so the next observation cycle is not contaminated
+        for obj in self._hidden_objects:
+            obj.hide_visual()
 
         # Render sensor first and then human renders
         for image in sensor_images.values():

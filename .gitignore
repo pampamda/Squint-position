@@ -98,4 +98,6 @@ Thumbs.db
 *.temp
 *.bak
 
+.cursor/plans/
 
+.claude/
